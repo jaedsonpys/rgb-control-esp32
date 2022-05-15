@@ -15,15 +15,27 @@ const char *password = "test";
 RGB rgb(redLedPin, greenLedPin, blueLedPin);
 
 void setup(){
+  Serial.begin(9600);
+  
   // connecting wifi
+  Serial.print("Connecting to WiFi");
+  
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
   while(WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
     delay(500);
   }
 
+  Serial.println("OK");
+
   // led signal to WiFi connected
+  Serial.println("WiFi connected");
+  
+  Serial.print("Local IP: ");
+  Serial.println(WiFi.localIP());
+  
   for(int i = 0; i < 6; i++) {
     rgb.green();
     delay(200);
@@ -31,7 +43,9 @@ void setup(){
     delay(200);
   }
 
-  MDNS.begin("esp32");
+  if(MDNS.begin("esp32")) {
+    Serial.println("mDNS Started.");
+  }
 }
 
 void loop() {
