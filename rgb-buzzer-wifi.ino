@@ -8,8 +8,6 @@ const int redLedPin = 33;
 const int greenLedPin = 27;
 const int blueLedPin = 14;
 
-const int buzzerPin = 32;
-
 // wifi data
 const char *ssid = "test";
 const char *password = "test";
@@ -17,8 +15,6 @@ const char *password = "test";
 RGB rgb(redLedPin, greenLedPin, blueLedPin);
 
 void setup(){
-  pinMode(buzzerPin, OUTPUT);
-
   // connecting wifi
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
