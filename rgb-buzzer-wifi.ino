@@ -30,6 +30,8 @@ void setup(){
     rgb.green();
     delay(200);
   }
+
+  MDNS.begin("esp32");
 }
 
 void loop() {
