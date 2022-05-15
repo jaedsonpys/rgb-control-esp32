@@ -13,6 +13,7 @@ const char *ssid = "test";
 const char *password = "test";
 
 RGB rgb(redLedPin, greenLedPin, blueLedPin);
+WiFiServer server(80); // creating a server in 80 port
 
 void setup(){
   Serial.begin(9600);
@@ -46,8 +47,31 @@ void setup(){
   if(MDNS.begin("esp32")) {
     Serial.println("mDNS Started.");
   }
+
+  // initializing server
+  server.begin();
 }
 
 void loop() {
-  
+  WiFiClient client = server.available();
+
+  if(client.connected()) {
+    Serial.println("---------------------");
+    Serial.print("New client connected: ");
+    Serial.println(client.remoteIP());
+    
+    String message = "";
+    Serial.println("Wait client message...");
+    
+    while(client.available() == 0); // waiting client message
+    while(client.available() > 0) {
+      char msg = client.read();
+      message.concat(msg);
+    }
+
+    Serial.print("Client message: ");
+    Serial.println(message);
+    Serial.println("Client closed");
+    client.stop();
+  }
 }
