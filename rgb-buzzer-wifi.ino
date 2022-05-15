@@ -17,6 +17,12 @@ class RGB {
     void blue() {
       digitalWrite(blueLedPin, !digitalRead(blueLedPin));
     }
+
+    void rgb(int red, int green, int blue) {
+      analogWrite(redLedPin, red);
+      analogWrite(greenLedPin, green);
+      analogWrite(blueLedPin, blue);
+    }
 };
 
 RGB rgb;
