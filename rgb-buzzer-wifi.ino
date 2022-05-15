@@ -36,6 +36,14 @@ void setup(){
   
   Serial.print("Local IP: ");
   Serial.println(WiFi.localIP());
+
+  if(MDNS.begin("esp32")) {
+    Serial.println("mDNS Started.");
+  }
+
+  // initializing server
+  Serial.println("Server started.");
+  server.begin();
   
   for(int i = 0; i < 6; i++) {
     rgb.green();
@@ -43,13 +51,6 @@ void setup(){
     rgb.green();
     delay(200);
   }
-
-  if(MDNS.begin("esp32")) {
-    Serial.println("mDNS Started.");
-  }
-
-  // initializing server
-  server.begin();
 }
 
 void loop() {
