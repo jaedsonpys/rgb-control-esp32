@@ -13,7 +13,7 @@ ct = None
 
 def initialize():
     host = host_entry.get()
-    port = port_entry.getint()
+    port = int(port_entry.get())
 
     ct = Controller(host, port)
 
