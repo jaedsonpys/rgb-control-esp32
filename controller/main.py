@@ -2,13 +2,20 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.colorchooser import Chooser
 
+from controller import Controller
+
 root = tk.Tk()
 root.title('RGB Controller ESP32')
 root.geometry('300x300')
 
+ct = None
+
 
 def initialize():
-    pass
+    host = host_entry.get()
+    port = port_entry.getint()
+
+    ct = Controller(host, port)
 
 
 ttk.Label(root, text='Host: ').grid(column=0, row=0)
