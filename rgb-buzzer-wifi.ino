@@ -59,45 +59,50 @@ void loop() {
     Serial.println("---------------------");
     Serial.print("New client connected: ");
     Serial.println(client.remoteIP());
-    
-    String message = "";
-    Serial.println("Wait client message...");
-    
-    while(client.available() == 0); // waiting client message
-    while(client.available() > 0) {
-      char msg = client.read();
-      message.concat(msg);
-    }
 
-    // commands handling
-    if(message == "RED") {
-      rgb.red();
-    } else if(message == "GREEN") {
-      rgb.green();
-    } else if(message == "BLUE") {
-      rgb.blue();
-    } else {
-      // rgb string
-      int rgbArray[2] = {};
-      int lastIndex = 0;
-
-      String rgbCode = "";
-
-      for(int i = 0; i < message.length(); i++) {
-        if(message.charAt(i) == ',') {
-          rgbArray[lastIndex] = rgbCode.toInt();
-          rgbCode = "";
-          lastIndex++;
-        } else {
-          rgbCode.concat(message[i]);
-        }
+    while(client.connected()) {  
+      String message = "";
+      Serial.println("Wait client message...");
+      
+      while(client.available() == 0); // waiting client message
+      while(client.available() > 0) {
+        char msg = client.read();
+        message.concat(msg);
       }
-
-      rgb.rgb(rgbArray[0], rgbArray[1], rgbArray[2]);
+  
+      // commands handling
+      if(message == "RED") {
+        rgb.red();
+      } else if(message == "GREEN") {
+        rgb.green();
+      } else if(message == "BLUE") {
+        rgb.blue();
+      } else if(message.startsWith("RGB")) {
+        message.replace("RGB ", "");
+        
+        // rgb string
+        int rgbArray[3] = {};
+        int lastIndex = 0;
+  
+        String rgbCode = "";
+  
+        for(int i = 0; i < message.length(); i++) {
+          if(message.charAt(i) == ',') {
+            rgbArray[lastIndex] = rgbCode.toInt();
+            rgbCode = "";
+            lastIndex++;
+          } else {
+            rgbCode.concat(message[i]);
+          }
+        }
+  
+        rgb.rgb(rgbArray[0], rgbArray[1], rgbArray[2]);
+      }
+  
+      Serial.print("Client message: ");
+      Serial.println(message);
     }
 
-    Serial.print("Client message: ");
-    Serial.println(message);
     Serial.println("Client closed");
     client.stop();
   }
